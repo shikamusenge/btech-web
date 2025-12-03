@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout code
+    # 1️⃣ Checkout repo
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # 2. Set up Docker Buildx
-    - name: Set up Docker
+    # 2️⃣ Set up Docker Buildx (BuildKit)
+    - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    # 3. Log in to GitHub Container Registry (GHCR)
+    # 3️⃣ Log in to GitHub Container Registry (GHCR)
     - name: Log in to GHCR
       uses: docker/login-action@v2
       with:
@@ -27,29 +27,29 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    # 4. Build & push Docker image to GHCR
+    # 4️⃣ Build and push Docker image
     - name: Build and Push Docker Image
       run: |
         IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/btech:dev
-        docker build -t $IMAGE_NAME .
+        DOCKER_BUILDKIT=1 docker build -t $IMAGE_NAME .
         docker push $IMAGE_NAME
 
-    # 5. Set up kubectl
+    # 5️⃣ Set up kubectl
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
       with:
         version: 'v1.28.0'
 
-    # 6. Configure Kubeconfig
+    # 6️⃣ Configure Kubeconfig
     - name: Configure Kubeconfig
       run: |
         echo "${{ secrets.KUBECONFIG_CONTENT }}" > kubeconfig
         export KUBECONFIG=$(pwd)/kubeconfig
 
-    # 7. Deploy to Kubernetes cluster
-    - name: Deploy to Cluster
+    # 7️⃣ Deploy to Kubernetes
+    - name: Deploy to Kubernetes
       run: |
-        # Update deployment.yaml to use GHCR image
+        # Update deployment.yaml to use the GHCR image
         sed -i "s|image: .*|image: ghcr.io/${{ github.repository_owner }}/btech:dev|" deployment.yaml
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml

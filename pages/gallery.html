@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="BTech Level 8 project gallery showcasing student work and research">
+    <title>Gallery — BTech Level 8</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f1724;
+            --bg-secondary: #07112a;
+            --accent: #6ee7b7;
+            --text-primary: #e6eef8;
+            --text-muted: #9aa7bf;
+            --card-bg: #0b1220;
+            --glass: rgba(255,255,255,0.03);
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 22px;
+            --spacing-2xl: 28px;
+            --radius-sm: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--text-primary);
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 60%);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.45;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .brand__logo {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #1f2937, #0ea5a8);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: #072023;
+        }
+        
+        .brand__info h1 {
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        .brand__subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        
+        .nav__link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav__link:hover, .nav__link--active {
+            background: var(--glass);
+            color: var(--accent);
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .page-header h2 {
+            font-size: 36px;
+            margin: 0 0 var(--spacing-md) 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Filter Tabs */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+        
+        /* Gallery Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .gallery-item {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+        }
+        
+        .gallery-item__image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #1a2332, #2d3748);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-item__image svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .gallery-item__content {
+            padding: var(--spacing-lg);
+        }
+        
+        .gallery-item__title {
+            font-weight: 700;
+            margin: 0 0 var(--spacing-sm) 0;
+            font-size: 16px;
+        }
+        
+        .gallery-item__meta {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            padding: 4px var(--spacing-sm);
+            border-radius: 999px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-right: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(3,7,18,0.9);
+            z-index: 100;
+            padding: 20px;
+        }
+        
+        .modal--open { display: flex; }
+        
+        .modal__content {
+            max-width: 1000px;
+            width: 100%;
+            background: linear-gradient(180deg, #031122, #042033);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+        
+        .modal__close {
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal__image {
+            width: 100%;
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .modal__title {
+            font-size: 24px;
+            margin: 0 0 var(--spacing-sm) 0;
+        }
+        
+        .modal__description {
+            color: var(--text-muted);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            padding: var(--spacing-2xl) 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 880px) {
+            .container { padding: var(--spacing-lg); }
+            .header { flex-direction: column; align-items: flex-start; }
+            .nav { width: 100%; flex-wrap: wrap; }
+            .page-header h2 { font-size: 28px; }
+            .gallery { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+        }
+        
+        @media (max-width: 640px) {
+            .container { padding: var(--spacing-md); }
+            .brand__logo { width: 40px; height: 40px; }
+            .brand__info h1 { font-size: 15px; }
+            .page-header h2 { font-size: 24px; }
+            .gallery { grid-template-columns: 1fr; }
+            .gallery-item__image { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a class="brand" href="index.html">
+                <div class="brand__logo">B8</div>
+                <div class="brand__info">
+                    <h1>BTech — Level 8</h1>
+                    <div class="brand__subtitle">Final year dashboard & projects</div>
+                </div>
+            </a>
+            <nav class="nav">
+                <a class="nav__link" href="/">Home</a>
+                <a class="nav__link" href="/aboutus">About Us</a>
+                <a class="nav__link" href="/contuct">Contact Us</a>
+                <a class="nav__link nav__link--active" href="gallery.html">Gallery</a>
+            </nav>
+        </header>
+
+        <div class="page-header">
+            <h2>Project Gallery</h2>
+            <p>Explore our collection of student projects, research work, and technical achievements from BTech Level 8</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="ai">AI & ML</button>
+            <button class="filter-btn" data-filter="hardware">Hardware</button>
+            <button class="filter-btn" data-filter="web">Web Development</button>
+            <button class="filter-btn" data-filter="robotics">Robotics</button>
+        </div>
+
+        <div class="gallery" id="gallery"></div>
+
+        <footer class="footer">
+            © <span id="year"></span> BTech Level 8 — Student Project Gallery
+        </footer>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal__content">
+            <button class="modal__close" id="closeModal">×</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const projects = [
+            {
+                id: 1,
+                title: "Autonomous Navigation System",
+                category: "ai",
+                group: "Group A",
+                description: "Deep learning-based autonomous vehicle navigation with real-time obstacle detection and path planning algorithms.",
+                color: "#4ade80"
+            },
+            {
+                id: 2,
+                title: "IoT Smart Campus",
+                category: "hardware",
+                group: "Group B",
+                description: "Integrated IoT system for campus automation including lighting, security, and energy management.",
+                color: "#60a5fa"
+            },
+            {
+                id: 3,
+                title: "E-Commerce Platform",
+                category: "web",
+                group: "Group C",
+                description: "Full-stack e-commerce solution with payment integration, inventory management, and analytics dashboard.",
+                color: "#f472b6"
+            },
+            {
+                id: 4,
+                title: "Robotic Arm Controller",
+                category: "robotics",
+                group: "Group D",
+                description: "6-DOF robotic arm with inverse kinematics, computer vision integration, and pick-and-place capabilities.",
+                color: "#a78bfa"
+            },
+            {
+                id: 5,
+                title: "Medical Image Analysis",
+                category: "ai",
+                group: "Group E",
+                description: "CNN-based medical imaging system for detecting anomalies in X-ray and MRI scans with 94% accuracy.",
+                color: "#34d399"
+            },
+            {
+                id: 6,
+                title: "Energy Harvesting Device",
+                category: "hardware",
+                group: "Group F",
+                description: "Piezoelectric energy harvester converting mechanical vibrations to electrical energy for low-power sensors.",
+                color: "#fbbf24"
+            },
+            {
+                id: 7,
+                title: "Student Portal Web App",
+                category: "web",
+                group: "Group G",
+                description: "Comprehensive student management portal with attendance tracking, grade management, and communication tools.",
+                color: "#fb923c"
+            },
+            {
+                id: 8,
+                title: "Warehouse Automation Robot",
+                category: "robotics",
+                group: "Group H",
+                description: "Autonomous mobile robot for warehouse inventory management with SLAM navigation and QR code scanning.",
+                color: "#c084fc"
+            },
+            {
+                id: 9,
+                title: "NLP Chatbot Assistant",
+                category: "ai",
+                group: "Group I",
+                description: "Natural language processing chatbot for customer service with sentiment analysis and multi-language support.",
+                color: "#2dd4bf"
+            },
+            {
+                id: 10,
+                title: "Smart Agriculture System",
+                category: "hardware",
+                group: "Group J",
+                description: "IoT-based precision agriculture with soil monitoring, automated irrigation, and crop health prediction.",
+                color: "#86efac"
+            },
+            {
+                id: 11,
+                title: "Real-Time Collaboration Tool",
+                category: "web",
+                group: "Group K",
+                description: "Web-based collaborative workspace with video conferencing, document sharing, and project management features.",
+                color: "#93c5fd"
+            },
+            {
+                id: 12,
+                title: "Drone Delivery System",
+                category: "robotics",
+                group: "Group L",
+                description: "Autonomous drone with GPS navigation, payload management, and automated landing system for last-mile delivery.",
+                color: "#d8b4fe"
+            }
+        ];
+
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        function generateProjectSVG(color, title) {
+            return `
+                <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad-${title}" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" style="stop-color:${color};stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:${color};stop-opacity:0.1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="#1a2332"/>
+                    <rect width="100%" height="100%" fill="url(#grad-${title})"/>
+                    <circle cx="300" cy="180" r="80" fill="${color}" opacity="0.2"/>
+                    <rect x="220" y="280" width="160" height="120" rx="8" fill="${color}" opacity="0.15"/>
+                    <text x="50%" y="45%" text-anchor="middle" font-family="Inter" font-size="48" font-weight="800" fill="${color}" opacity="0.8">RP</text>
+                </svg>
+            `;
+        }
+
+        function renderGallery(filter = 'all') {
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+            
+            gallery.innerHTML = filtered.map(project => `
+                <div class="gallery-item" data-id="${project.id}">
+                    <div class="gallery-item__image">
+                        ${generateProjectSVG(project.color, project.title)}
+                    </div>
+                    <div class="gallery-item__content">
+                        <h3 class="gallery-item__title">${project.title}</h3>
+                        <div class="gallery-item__meta">${project.group}</div>
+                        <span class="tag">${project.category.toUpperCase()}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const id = parseInt(item.dataset.id);
+                    openModal(id);
+                });
+            });
+        }
+
+        function openModal(id) {
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+
+            modalBody.innerHTML = `
+                <div class="modal__image">
+                    ${generateProjectSVG(project.color, project.title)}
+                </div>
+                <h3 class="modal__title">${project.title}</h3>
+                <p class="modal__description"><strong>${project.group}</strong> — ${project.description}</p>
+                <span class="tag">${project.category.toUpperCase()}</span>
+            `;
+
+            modal.classList.add('modal--open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalFn() {
+            modal.classList.remove('modal--open');
+            document.body.style.overflow = '';
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderGallery(btn.dataset.filter);
+            });
+        });
+
+        closeModal.addEventListener('click', closeModalFn);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModalFn();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModalFn();
+        });
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+        renderGallery();
+    </script>
+</body>
+</html>
