@@ -5,7 +5,7 @@
 set -e
 
 # 1. Use Minikube Docker daemon
-echo "Switching Docker to Minikube environment....."
+echo "Switching Docker to Minikube environment..."
 eval $(minikube docker-env)
 
 # 2. Build Docker image
@@ -13,7 +13,7 @@ IMAGE_NAME=btech:dev
 echo "Building Docker image $IMAGE_NAME..."
 docker build -t $IMAGE_NAME .
 
-# 3. Update deployment.yaml image (optional)
+# 3. Update deployment.yaml image
 echo "Updating deployment.yaml with image $IMAGE_NAME..."
 sed -i "s|image: .*|image: $IMAGE_NAME|" deployment.yaml
 
@@ -22,7 +22,7 @@ echo "Applying Kubernetes deployment and service..."
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 
-# 5. Rollout restart to pick up new image
+# 5. Rollout restart
 echo "Restarting deployment..."
 kubectl rollout restart deployment node-deployment
 
@@ -33,7 +33,5 @@ kubectl get pods -o wide
 # 7. Show service info
 echo "Service info:"
 kubectl get svc
-# 8. Restart service (if needed)
-# echo "Restarting service..."
-kubectl delete svc node-
+
 echo "CI/CD process completed successfully."
