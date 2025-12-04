@@ -1,43 +1,39 @@
-# ================================
-# Local CI/CD Script for Windows
-# Node.js + Minikube + PowerShell
-# ================================
+#!/bin/bash
 
-$ErrorActionPreference = "Stop"
+# === Local CI/CD Script for Node.js + Minikube ===
 
-Write-Host "Switching Docker to Minikube environment..."
-minikube docker-env | Invoke-Expression
+set -e
 
-# 1. Build Docker image
-$IMAGE_NAME = "btech:dev"
-Write-Host "Building Docker image $IMAGE_NAME ..."
+# 1. Use Minikube Docker daemon
+echo "Switching Docker to Minikube environment..."
+eval $(minikube docker-env)
+
+# 2. Build Docker image
+IMAGE_NAME=btech:dev
+echo "Building Docker image $IMAGE_NAME..."
 docker build -t $IMAGE_NAME .
 
-# 2. Update deployment.yaml image
-Write-Host "Updating deployment.yaml with image $IMAGE_NAME ..."
-(Get-Content deployment.yaml) `
-    -replace "image: .*", "image: $IMAGE_NAME" |
-    Set-Content deployment.yaml
+# 3. Update deployment.yaml image (optional)
+echo "Updating deployment.yaml with image $IMAGE_NAME..."
+sed -i "s|image: .*|image: $IMAGE_NAME|" deployment.yaml
 
-# 3. Apply deployment and service
-Write-Host "Applying Kubernetes deployment and service..."
+# 4. Apply deployment and service
+echo "Applying Kubernetes deployment and service..."
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 
-# 4. Rollout restart
-Write-Host "Restarting deployment..."
-kubectl rollout restart deployment/node-deployment
+# 5. Rollout restart to pick up new image
+echo "Restarting deployment..."
+kubectl rollout restart deployment node-deployment
 
-# 5. Show pod status
-Write-Host "Deployment status:"
+# 6. Show pod status
+echo "Deployment status:"
 kubectl get pods -o wide
 
-# 6. Show service info
-Write-Host "Service info:"
+# 7. Show service info
+echo "Service info:"
 kubectl get svc
-
-# (Optional) Delete service if needed
-# Write-Host "Restarting service..."
-# kubectl delete svc node-
-
-Write-Host "CI/CD process completed successfully."
+# 8. Restart service (if needed)
+# echo "Restarting service..."
+kubectl delete svc node-
+echo "CI/CD process completed successfully."
