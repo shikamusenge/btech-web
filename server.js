@@ -22,6 +22,7 @@ app.get('/contactus', (req, res) => {
 app.get('/gallery', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages', 'garelly.html'));
 });
+app.use(express.static('pages'));
 
 // Start server
 app.listen(PORT, () => {

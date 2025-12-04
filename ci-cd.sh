@@ -33,3 +33,7 @@ kubectl get pods -o wide
 # 7. Show service info
 echo "Service info:"
 kubectl get svc
+# 8. Restart service (if needed)
+# echo "Restarting service..."
+kubectl delete svc node-
+echo "CI/CD process completed successfully."
