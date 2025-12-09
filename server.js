@@ -19,7 +19,7 @@ app.get('/about', (req, res) => {
 app.get('/contactus', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages', 'contactus.html'));
 });
-app.get('/gallery', (req, res) => {
+app.get('/garelly', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages', 'garelly.html'));
 });
 app.use(express.static('pages'));

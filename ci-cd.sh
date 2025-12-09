@@ -9,7 +9,7 @@ echo "Switching Docker to Minikube environment..."
 eval $(minikube docker-env)
 
 # 2. Build Docker image
-IMAGE_NAME=btech:dev
+IMAGE_NAME=btech:prod
 echo "Building Docker image $IMAGE_NAME..."
 docker build -t $IMAGE_NAME .
 
