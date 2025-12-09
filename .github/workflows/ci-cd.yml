@@ -33,13 +33,15 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    # 4️⃣ Build and push Docker image
+    # 4️⃣ Build & Push Docker Image
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
       with:
         context: .
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/btech:dev,ghcr.io/${{ github.repository_owner }}/btech:${{ github.sha }}
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/btech:dev
+          ghcr.io/${{ github.repository_owner }}/btech:${{ github.sha }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -49,11 +51,19 @@ jobs:
       with:
         version: 'v1.28.0'
 
-    # 6️⃣ Configure Kubeconfig
+    # 6️⃣ Configure kubeconfig (supports raw or base64)
     - name: Configure Kubeconfig
       run: |
         mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG_CONTENT }}" | base64 -d > $HOME/.kube/config
+        
+        # Attempt to decode. If fail → treat as raw text.
+        if echo "${{ secrets.KUBECONFIG_CONTENT }}" | base64 -d > $HOME/.kube/config 2>/dev/null; then
+          echo "Kubeconfig decoded from base64."
+        else
+          echo "${{ secrets.KUBECONFIG_CONTENT }}" > $HOME/.kube/config
+          echo "Kubeconfig loaded as raw YAML."
+        fi
+
         chmod 600 $HOME/.kube/config
 
     # 7️⃣ Deploy to Kubernetes
@@ -61,18 +71,20 @@ jobs:
       env:
         IMAGE_TAG: ghcr.io/${{ github.repository_owner }}/btech:${{ github.sha }}
       run: |
-        # Update deployment.yaml to use the specific image tag
+        echo "Using image: $IMAGE_TAG"
+
+        # Update image inside deployment file
         sed -i "s|image: .*btech:.*|image: $IMAGE_TAG|" deployment.yaml
-        
-        # Apply Kubernetes manifests
+
+        echo "Applying Kubernetes manifests..."
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
-        
-        # Wait for rollout to complete
+
+        echo "Waiting for rollout..."
         kubectl rollout status deployment/node-deployment --timeout=5m
-        
-        # Restart deployment to pull new image
+
+        echo "Restarting deployment..."
         kubectl rollout restart deployment/node-deployment
-        
-        # Verify deployment
+
+        echo "Verifying pods..."
         kubectl get pods -l app=node-deployment
