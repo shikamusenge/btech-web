@@ -1,78 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT BTech Level 8 - NGOMA College</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About RP Gallery</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: #0f1335;
+            border-bottom: 2px solid rgba(102,126,234,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        nav a {
+            color: #cbd5e0;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: #11152f;
+            border-radius: 18px;
+            border: 1px solid rgba(102, 126, 234, 0.25);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #cbd5e0;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            color: #aab4ff;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">RP NGOMA College</div>
-            <ul class="nav-links">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/gallery">Curriculum</a></li>
-                <li><a href="/contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        <section id="hero" class="hero">
-            <div class="hero-content">
-                <h1>IT BTech Level 8</h1>
-                <p>Advanced Technology & Innovation</p>
-                <button class="cta-btn">Explore Program</button>
-            </div>
-        </section>
+    <nav>
+        <div style="font-size:1.5rem; font-weight:bold; color:#aab4ff;">RP Gallery</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="gallery.html">Students</a></li>
+            <li><a href="#">Programs</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
 
-        <section id="about" class="about">
-            <h2>About the Program</h2>
-            <div class="cards-container">
-                <div class="card">
-                    <i class="fas fa-graduation-cap"></i>
-                    <h3>Expert Faculty</h3>
-                    <p>Learn from industry professionals with years of experience.</p>
-                </div>
-                <div class="card">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>Hands-On Learning</h3>
-                    <p>Practical projects and real-world applications.</p>
-                </div>
-                <div class="card">
-                    <i class="fas fa-network-wired"></i>
-                    <h3>Modern Technology</h3>
-                    <p>Latest tools and frameworks in the tech industry.</p>
-                </div>
-            </div>
-        </section>
+    <div class="container">
+        <h1>About RP Students Gallery</h1>
+        <p>
+            The <span class="highlight">RP Students Gallery</span> is a modern web showcase designed to celebrate the creativity, diversity,
+            and talent within Rwanda Polytechnic. It highlights outstanding students from various campuses and academic programs, providing a digital space to inspire others and document achievements.
+        </p>
+        <p>
+            This platform was created to:
+        </p>
+        <p>
+            • Showcase student profiles and their areas of excellence<br>
+            • Promote innovation and digital literacy within RP<br>
+            • Provide a meaningful portfolio space for young professionals<br>
+            • Strengthen community engagement and visibility
+        </p>
+        <p>
+            By combining sleek UI design, beautiful visuals, and responsive technology, the RP Gallery aims to be a central hub representing the next generation of Rwanda’s tech and creative leaders.
+        </p>
+    </div>
 
-        <section id="curriculum" class="curriculum">
-            <h2>Curriculum Highlights</h2>
-            <ul class="curriculum-list">
-                <li><strong>Advanced Web Technologies</strong> - Full-stack development</li>
-                <li><strong>Cloud Computing</strong> - AWS, Azure, GCP</li>
-                <li><strong>AI & Machine Learning</strong> - Data science applications</li>
-                <li><strong>Cybersecurity</strong> - Network security & encryption</li>
-                <li><strong>Capstone Project</strong> - Industry-based solution</li>
-            </ul>
-        </section>
-
-        <section id="contact" class="contact">
-            <h2>Get in Touch</h2>
-            <div class="contact-info">
-                <p><i class="fas fa-envelope"></i> Email: info@ngomacollege.edu</p>
-                <p><i class="fas fa-phone"></i> Phone: +1 (555) 123-4567</p>
-                <p><i class="fas fa-map-marker-alt"></i> Location: NGOMA College Campus</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 NGOMA College - IT BTech Level 8. All rights reserved.</p>
-    </footer>
 </body>
 </html>
