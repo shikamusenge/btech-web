@@ -57,13 +57,13 @@
 
     ws.onopen = () => {
       ws.send(`${username}: has joined the chat`);
-    };
+    }; // active icon will be shown next to usernames
 
     ws.onmessage = (ev) => {
       const box = document.getElementById("chat-box");
       const p = document.createElement("div");
       p.className = "message";
-      p.innerHTML = `<strong><i class=\"fa-solid fa-user\"></i> ${ev.data.split(':')[0]}:</strong> ${ev.data.split(':').slice(1).join(':').trim()}`;
+      p.innerHTML = `<strong><i class=\"fa-solid fa-circle-user\" style=\"color:#2ecc71;\"></i> style=\"color:#2ecc71;\"></i>> ${ev.data.split(':')[0]}:</strong> ${ev.data.split(':').slice(1).join(':').trim()}`;
       box.appendChild(p);
       box.scrollTop = box.scrollHeight;
     };
@@ -81,7 +81,7 @@
       arr.forEach(m => {
         const p = document.createElement("div");
         p.className = "message";
-        p.innerHTML = `<strong><i class=\"fa-solid fa-user\"></i> ${m.username}:</strong> ${m.message}`;
+        p.innerHTML = `<strong><i class=\"fa-solid fa-circle-user\" style=\"color:#2ecc71;\"></i> style=\"color:#2ecc71;\"></i>> ${m.username}:</strong> ${m.message}`;
         box.appendChild(p);
       });
       box.scrollTop = box.scrollHeight;
@@ -90,7 +90,7 @@
 </script>
 
 <footer>
-  &copy; 2025 IPRC Ngoma - Dept. of Information Technology
+  &copy; 2025 IPRC Ngoma – Dept. of Information Technology
 </footer>
 </body>
 </html>
