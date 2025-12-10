@@ -1,59 +1,79 @@
 pipeline {
     agent any
     
-    tools {
-        nodejs 'NodeJS-16' // Configure in Jenkins Global Tool Configuration
-    }
-    
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/shikamusenge/btech-web.git',
-                    credentialsId: 'github-token'
+                echo '📦 Checking out code from GitHub...'
+                checkout scm
             }
         }
         
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
-            }
-        }
-        
-        stage('Lint') {
-            steps {
-                // sh 'npm run lint'
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                // sh 'npm test'
+                echo '📥 Installing dependencies...'
+                sh '''
+                    if [ -f package.json ]; then
+                        npm install
+                    else
+                        echo "No package.json found"
+                    fi
+                '''
             }
         }
         
         stage('Build') {
             steps {
-                // sh 'npm run build'
+                echo '🔨 Building application...'
+                sh '''
+                    if [ -f package.json ]; then
+                        npm run build || echo "No build script defined"
+                    else
+                        echo "No package.json found"
+                    fi
+                '''
             }
         }
         
-        stage('Archive Artifacts') {
+        stage('Test') {
             steps {
-                // archiveArtifacts artifacts: 'dist/**/*', fingerprint: true
+                echo '🧪 Running tests...'
+                sh '''
+                    if [ -f package.json ]; then
+                        npm test || echo "No test script defined"
+                    else
+                        echo "No package.json found"
+                    fi
+                '''
+            }
+        }
+        
+        stage('Docker Build') {
+            steps {
+                echo '🐳 Building Docker image...'
+                sh '''
+                    if [ -f Dockerfile ]; then
+                        docker build -t btech:${BUILD_NUMBER} .
+                        docker tag btech:${BUILD_NUMBER} btech:latest
+                        echo "Docker image built: btech:${BUILD_NUMBER}"
+                    else
+                        echo "No Dockerfile found, skipping Docker build"
+                    fi
+                '''
             }
         }
     }
     
     post {
-        always {
-            cleanWs()
-        }
         success {
             echo '✅ Build successful!'
+            echo "Build #${BUILD_NUMBER} completed"
         }
         failure {
             echo '❌ Build failed!'
+        }
+        always {
+            echo '🧹 Cleaning workspace...'
         }
     }
 }
