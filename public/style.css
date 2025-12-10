@@ -1,0 +1,229 @@
+/* public/style.css */
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f5f7fa;
+    color: #333;
+}
+
+/* Header / Nav */
+header {
+    background: #1b3c6b;
+    padding: 18px 0;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+nav {
+    width: 92%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h2 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 18px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.25s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background: rgba(255,221,87,0.12);
+    color: #ffdd57;
+}
+
+/* hero */
+.hero {
+    width: 100%;
+    padding: 60px 0;
+    text-align: center;
+    background: linear-gradient(rgba(27,60,107,0.75), rgba(27,60,107,0.75)), url('/img/banner.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    border-radius: 0 0 24px 24px;
+}
+
+.hero h1 {
+    font-size: 44px;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 16px;
+    width: 70%;
+    margin: 10px auto 0;
+}
+
+/* section */
+.section {
+    width: 86%;
+    margin: 36px auto;
+}
+
+.section h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.section p {
+    text-align: center;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+/* features */
+.features {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 18px;
+}
+
+.feature-box {
+    background: white;
+    width: 32%;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(19, 35, 65, 0.06);
+    transition: 0.25s;
+    text-align: center;
+}
+
+.feature-box:hover {
+    transform: translateY(-6px);
+}
+
+/* gallery */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(19, 35, 65, 0.06);
+}
+
+/* join form box */
+.join-box {
+    background: white;
+    width: 52%;
+    margin: 16px auto;
+    padding: 26px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(19, 35, 65, 0.06);
+}
+
+.join-box label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.join-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 1px solid #e3e6ea;
+}
+
+.join-box button {
+    background: #1b3c6b;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.join-box button:hover {
+    background: #ffdd57;
+    color: #1b3c6b;
+}
+
+/* chat */
+#chat-box {
+    width: 70%;
+    height: 420px;
+    background: white;
+    margin: 16px auto;
+    overflow-y: auto;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(19, 35, 65, 0.06);
+}
+
+.message {
+    background: #e9f5ff;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    max-width: 78%;
+}
+
+.message strong {
+    color: #1b3c6b;
+}
+
+/* footer */
+footer {
+    background: #1b3c6b;
+    padding: 18px;
+    text-align: center;
+    color: white;
+    margin-top: 34px;
+    border-radius: 12px 12px 0 0;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+    .features { flex-direction: column; }
+    .feature-box { width: 100%; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .join-box { width: 90%; }
+    #chat-box { width: 92%; height: 320px; }
+    .hero h1 { font-size: 32px; }
+    .hero p { width: 90%; }
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chat – IPRC Ngoma</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <h2>IPRC Ngoma IT</h2>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/gallery.html">Gallery</a></li>
+      <li><a href="/join.html">Join</a></li>
+      <li><a href="/chat.html" class="active">Chat</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+  <h2>Student Chat Room</h2>
+  <p>Chat live with classmates. You must join from the Join page first.</p>
+
+  <div id="chat-box"></div>
+
+  <div style="width:70%; margin: 14px auto; display:flex; gap:10px;">
+    <input id="msg" type="text" placeholder="Type your message..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;">
+    <button id="sendBtn" style="padding:10px 18px; border-radius:8px; background:#1b3c6b; color:white; border:none;">Send</button>
+  </div>
+</section>
+
+<script>
+  // read name & regno from query params (redirected from join form)
+  function getQuery() {
+    const q = {};
+    location.search.slice(1).split("&").forEach(pair => {
+      if (!pair) return;
+      const [k,v] = pair.split("=");
+      q[decodeURIComponent(k)] = decodeURIComponent(v || "");
+    });
+    return q;
+  }
+
+  const q = getQuery();
+  const username = q.name || "";
+  const regno = q.regno || "";
+
+  if (!username) {
+    // warn and provide link to join page
+    document.getElementById("chat-box").innerHTML = '<p style="text-align:center; color:#777">Please <a href="/join.html">join</a> first (provide RegNo and Name).</p>';
+  } else {
+    const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host);
+
+    ws.onopen = () => {
+      // optionally announce join
+      ws.send(`${username}: has joined the chat`);
+    };
+
+    ws.onmessage = (ev) => {
+      const box = document.getElementById("chat-box");
+      const p = document.createElement("div");
+      p.className = "message";
+      p.innerHTML = `<strong>${ev.data.split(':')[0]}:</strong> ${ev.data.split(':').slice(1).join(':').trim()}`;
+      box.appendChild(p);
+      box.scrollTop = box.scrollHeight;
+    };
+
+    document.getElementById("sendBtn").onclick = () => {
+      const textEl = document.getElementById("msg");
+      const text = textEl.value.trim();
+      if (!text) return;
+      ws.send(`${username}: ${text}`);
+      textEl.value = "";
+    };
+
+    // load recent messages via HTTP and show them
+    fetch('/api/messages').then(r => r.json()).then(arr => {
+      const box = document.getElementById("chat-box");
+      arr.forEach(m => {
+        const p = document.createElement("div");
+        p.className = "message";
+        p.innerHTML = `<strong>${m.username}:</strong> ${m.message}`;
+        box.appendChild(p);
+      });
+      box.scrollTop = box.scrollHeight;
+    });
+  }
+</script>
+
+<footer>
+  &copy; 2025 IPRC Ngoma – Dept. of Information Technology
+</footer>
+</body>
+</html>

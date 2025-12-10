@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Join – IPRC Ngoma IT</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <h2>IPRC Ngoma IT</h2>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/gallery.html">Gallery</a></li>
+      <li><a href="/join.html" class="active">Join</a></li>
+      <li><a href="/chat.html">Chat</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+  <h2>Register / Join Chat</h2>
+  <p>Enter your registration number and name to join the chatroom.</p>
+
+  <div class="join-box">
+    <form action="/join" method="POST">
+      <label for="regno">Registration Number</label>
+      <input id="regno" name="regno" type="text" required placeholder="IPRC/NGOMA/...">
+
+      <label for="name">Full Name</label>
+      <input id="name" name="name" type="text" required placeholder="Your Full Name">
+
+      <button type="submit">Join Now</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 IPRC Ngoma – Dept. of Information Technology
+</footer>
+</body>
+</html>
