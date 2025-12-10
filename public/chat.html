@@ -2,10 +2,336 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat – IPRC Ngoma</title>
-  <link rel="stylesheet" href="/style.css">
-  <!-- Icons (e.g., Font Awesome) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header / Nav */
+    header {
+      background: #1b3c6b;
+      padding: 18px 0;
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    nav {
+      width: 92%;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav ul li {
+      margin-left: 18px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: 0.25s;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      background: rgba(255,221,87,0.12);
+      color: #ffdd57;
+    }
+
+    /* Section */
+    .section {
+      width: 86%;
+      margin: 36px auto;
+      flex: 1;
+    }
+
+    .section h2 {
+      font-size: 30px;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #1b3c6b;
+    }
+
+    .section > p {
+      text-align: center;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    /* Chat Container */
+    #chat-container {
+      background: white;
+      width: 75%;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(19, 35, 65, 0.06);
+      overflow: hidden;
+    }
+
+    #chat-box {
+      height: 480px;
+      overflow-y: auto;
+      padding: 18px;
+      background: #f9fafb;
+    }
+
+    #chat-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #chat-box::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    #chat-box::-webkit-scrollbar-thumb {
+      background: #1b3c6b;
+      border-radius: 4px;
+    }
+
+    #chat-box::-webkit-scrollbar-thumb:hover {
+      background: #ffdd57;
+    }
+
+    .message {
+      background: #e9f5ff;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      animation: slideIn 0.3s ease;
+      box-shadow: 0 2px 8px rgba(27, 60, 107, 0.08);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message strong {
+      color: #1b3c6b;
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .message strong i {
+      color: #ffdd57;
+      margin-right: 6px;
+    }
+
+    .message-text {
+      color: #555;
+      word-wrap: break-word;
+      line-height: 1.5;
+    }
+
+    .system-message {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      background: #fff4e6;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 3px solid #ffdd57;
+    }
+
+    .system-message i {
+      color: #ffdd57;
+      margin-right: 6px;
+    }
+
+    /* Input Area */
+    .input-area {
+      padding: 18px;
+      background: white;
+      border-top: 1px solid #e3e6ea;
+      display: flex;
+      gap: 12px;
+    }
+
+    #msg {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e3e6ea;
+      font-size: 15px;
+      transition: border-color 0.25s;
+    }
+
+    #msg:focus {
+      outline: none;
+      border-color: #1b3c6b;
+    }
+
+    #sendBtn {
+      background: #1b3c6b;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: 0.25s;
+      box-shadow: 0 3px 12px rgba(27, 60, 107, 0.2);
+    }
+
+    #sendBtn:hover {
+      background: #ffdd57;
+      color: #1b3c6b;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 16px rgba(255, 221, 87, 0.4);
+    }
+
+    #sendBtn:active {
+      transform: translateY(0);
+    }
+
+    /* Warning Box */
+    .warning {
+      text-align: center;
+      padding: 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(19, 35, 65, 0.06);
+      margin: 20px auto;
+      width: 60%;
+    }
+
+    .warning i {
+      font-size: 48px;
+      color: #ffdd57;
+      margin-bottom: 16px;
+    }
+
+    .warning p {
+      color: #555;
+      font-size: 16px;
+    }
+
+    .warning a {
+      color: #1b3c6b;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .warning a:hover {
+      color: #ffdd57;
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background: #1b3c6b;
+      padding: 18px;
+      text-align: center;
+      color: white;
+      margin-top: 34px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    /* Online Indicator */
+    .online-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #2ecc71;
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      nav ul {
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0 8px;
+      }
+
+      #chat-container {
+        width: 92%;
+      }
+
+      #chat-box {
+        height: 360px;
+      }
+
+      .warning {
+        width: 90%;
+      }
+
+      .input-area {
+        flex-direction: column;
+      }
+
+      #sendBtn {
+        width: 100%;
+      }
+
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -23,24 +349,29 @@
 
 <section class="section">
   <h2><i class="fa-solid fa-comments"></i> Student Chat Room</h2>
-  <p>Chat live with classmates. You must join from the Join page first.</p>
+  <p><span class="online-indicator"></span>Chat live with classmates. You must join from the Join page first.</p>
 
-  <div id="chat-box"></div>
-
-  <div style="width:70%; margin: 14px auto; display:flex; gap:10px;">
-    <input id="msg" type="text" placeholder="Type your message..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;">
-    <button id="sendBtn" style="padding:10px 18px; border-radius:8px; background:#1b3c6b; color:white; border:none;">
-      <i class="fa-solid fa-paper-plane"></i> Send
-    </button>
+  <div id="chat-container">
+    <div id="chat-box"></div>
+    <div class="input-area">
+      <input id="msg" type="text" placeholder="Type your message..." autocomplete="off">
+      <button id="sendBtn">
+        <i class="fa-solid fa-paper-plane"></i> Send
+      </button>
+    </div>
   </div>
 </section>
+
+<footer>
+  &copy; 2025 IPRC Ngoma – Dept. of Information Technology
+</footer>
 
 <script>
   function getQuery() {
     const q = {};
     location.search.slice(1).split("&").forEach(pair => {
       if (!pair) return;
-      const [k,v] = pair.split("=");
+      const [k, v] = pair.split("=");
       q[decodeURIComponent(k)] = decodeURIComponent(v || "");
     });
     return q;
@@ -51,46 +382,105 @@
   const regno = q.regno || "";
 
   if (!username) {
-    document.getElementById("chat-box").innerHTML = '<p style="text-align:center; color:#777">Please <a href="/join.html">join</a> first (provide RegNo and Name).</p>';
+    document.getElementById("chat-box").innerHTML = `
+      <div class="warning">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p>Please <a href="/join.html">join</a> first (provide RegNo and Name).</p>
+      </div>
+    `;
   } else {
     const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host);
 
     ws.onopen = () => {
       ws.send(`${username}: has joined the chat`);
-    }; // active icon will be shown next to usernames
+    };
 
     ws.onmessage = (ev) => {
       const box = document.getElementById("chat-box");
-      const p = document.createElement("div");
-      p.className = "message";
-      p.innerHTML = `<strong><i class=\"fa-solid fa-circle-user\" style=\"color:#2ecc71;\"></i> style=\"color:#2ecc71;\"></i>> ${ev.data.split(':')[0]}:</strong> ${ev.data.split(':').slice(1).join(':').trim()}`;
-      box.appendChild(p);
+      const msgDiv = document.createElement("div");
+      
+      const parts = ev.data.split(':');
+      const sender = parts[0];
+      const message = parts.slice(1).join(':').trim();
+      
+      if (message === 'has joined the chat' || message === 'has left the chat') {
+        msgDiv.className = "system-message";
+        msgDiv.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${sender} ${message}`;
+      } else {
+        msgDiv.className = "message";
+        msgDiv.innerHTML = `
+          <strong>
+            <i class="fa-solid fa-circle-user"></i> ${sender}:
+          </strong>
+          <div class="message-text">${message}</div>
+        `;
+      }
+      
+      box.appendChild(msgDiv);
       box.scrollTop = box.scrollHeight;
     };
 
-    document.getElementById("sendBtn").onclick = () => {
+    ws.onclose = () => {
+      const box = document.getElementById("chat-box");
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "system-message";
+      msgDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Connection closed. Please refresh the page.';
+      box.appendChild(msgDiv);
+    };
+
+    ws.onerror = (err) => {
+      console.error('WebSocket error:', err);
+    };
+
+    document.getElementById("sendBtn").onclick = sendMessage;
+    
+    document.getElementById("msg").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
       const textEl = document.getElementById("msg");
       const text = textEl.value.trim();
       if (!text) return;
-      ws.send(`${username}: ${text}`);
-      textEl.value = "";
-    };
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(`${username}: ${text}`);
+        textEl.value = "";
+      } else {
+        alert('Connection lost. Please refresh the page.');
+      }
+    }
 
-    fetch('/api/messages').then(r => r.json()).then(arr => {
-      const box = document.getElementById("chat-box");
-      arr.forEach(m => {
-        const p = document.createElement("div");
-        p.className = "message";
-        p.innerHTML = `<strong><i class=\"fa-solid fa-circle-user\" style=\"color:#2ecc71;\"></i> style=\"color:#2ecc71;\"></i>> ${m.username}:</strong> ${m.message}`;
-        box.appendChild(p);
+    // Load previous messages
+    fetch('/api/messages')
+      .then(r => r.json())
+      .then(arr => {
+        const box = document.getElementById("chat-box");
+        arr.forEach(m => {
+          const msgDiv = document.createElement("div");
+          msgDiv.className = "message";
+          msgDiv.innerHTML = `
+            <strong>
+              <i class="fa-solid fa-circle-user"></i> ${m.username}:
+            </strong>
+            <div class="message-text">${m.message}</div>
+          `;
+          box.appendChild(msgDiv);
+        });
+        box.scrollTop = box.scrollHeight;
+      })
+      .catch(err => {
+        console.log('Could not load previous messages:', err);
       });
-      box.scrollTop = box.scrollHeight;
+
+    // Send leave message when user closes/leaves the page
+    window.addEventListener('beforeunload', () => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(`${username}: has left the chat`);
+      }
     });
   }
 </script>
-
-<footer>
-  &copy; 2025 IPRC Ngoma – Dept. of Information Technology
-</footer>
 </body>
 </html>
